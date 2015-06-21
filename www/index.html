@@ -12,33 +12,39 @@
     <title>P3D</title>
 </head>
 <body>
-    <!-- HOME PAGE -->
+    <!-------------------------- PAGE 1: HOME -------------------------->
     <div data-role="page" id="home">
         <div data-role="header">
             <h1>Home</h1>
+            <a href="#nav-panelHistory" data-transition="pop" data-rel="popup"data-icon="clock" class="ui-btn-right">History</a>
         </div>
         <div role="main" class="ui-content vertical-center">
             <div>
-                <p>Content</p>
-                <input type="text" id="structure" placeholder="Structure Name" />
-                <a href="#viewer" class="ui-btn" data-transition="flip">Graph</a>
+                <label for="search">Search Input:</label>
+                <input type="search" name="structure" id="search" value="" placeholder="Structure Name" />
+                <a href="#viewer" class="ui-btn" data-transition="fade" id="btnGraph">Graph</a>
             </div>
             
         </div>
         <div data-role="footer">
             <h1>Footer</h1>
         </div>
+        <div data-role="panel" data-position="right" data-display="overlay" data-theme="a" id="nav-panelHistory">
+            <ul data-role="listview" id="historyList">
+                <li data-icon="delete"><a href="#" data-rel="close">Close history</a></li>
+                <!-- NOTA: AQUI CARGA DINAMICAMENTE EL HISTORIAL -->
+            </ul>
+        </div><!-- /panel -->
     </div>
-
-    <!-- VIEWER PAGE -->
+    <!-------------------------- PAGE 2: VIEWER -------------------------->
     <div data-role="page" class="ui-page" id="viewer">
         <div data-role="header" data-add-back-btn="true">
             <h1>P3D Viewer</h1>
-            <a href="#nav-panel" data-icon="gear" class="ui-btn-right">Views</a>
+            <a href="#nav-panelConfig" data-icon="gear" class="ui-btn-right">Views</a>
         </div>
         <div role="main" class="ui-content vertical-center">
             <h1>Name</h1>
-            <iframe class="w100per" style="height:60vh;" src="http://192.168.0.15:8000/"></iframe>
+            <iframe class="w100per" style="height:65vh;" src="http://biasmv.github.io/pv/demo.html"></iframe>
         </div>
         <div data-role="footer">
             <div class="ui-grid-b" style="text-align: center;">
@@ -59,7 +65,7 @@
                 </div>
             </div>
         </div>
-        <div data-role="panel" data-position="right" data-display="overlay" data-theme="a" id="nav-panel">
+        <div data-role="panel" data-position="right" data-display="overlay" data-theme="a" id="nav-panelConfig">
             <ul data-role="listview">
                 <li data-icon="delete"><a href="#" data-rel="close">Close menu</a></li>
                 <li><a href="#panel-fixed-page2">Cartoon</a></li>
@@ -71,10 +77,7 @@
             </ul>
         </div><!-- /panel -->
     </div>
-
-    <!--
-    <script type="text/javascript" src="cordova.js"></script>
-    -->
+    <!-- -->
     <script type="text/javascript" src="cordova.js"></script>
     <script type="text/javascript" src="js/index.js"></script>
 </body>
