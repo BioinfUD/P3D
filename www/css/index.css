@@ -49,3 +49,7 @@ margin: .3em !important;
     -ms-transform: translateY(-40%);
     transform: translateY(-40%);
 }
+#popupPublication{
+  height:80vh;
+  width: 80vh;
+}

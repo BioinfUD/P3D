@@ -20,11 +20,10 @@
         </div>
         <div role="main" class="ui-content vertical-center">
             <div>
-                <label for="search">Search Input:</label>
+                <p>Search Input:</p>
                 <input type="search" name="structure" id="search" value="" placeholder="Structure Name" />
                 <a href="#viewer" class="ui-btn" data-transition="fade" id="btnGraph">Graph</a>
             </div>
-            
         </div>
         <div data-role="footer">
             <h1>Footer</h1>
@@ -35,17 +34,17 @@
                 <!-- NOTA: AQUI CARGA DINAMICAMENTE EL HISTORIAL -->
             </ul>
         </div><!-- /panel -->
-    </div>
+    </div><!-- /page -->
     <!-------------------------- PAGE 2: VIEWER -------------------------->
     <div data-role="page" class="ui-page" id="viewer">
         <div data-role="header" data-add-back-btn="true">
             <h1>P3D Viewer</h1>
             <a href="#nav-panelConfig" data-icon="gear" class="ui-btn-right">Views</a>
-        </div>
+        </div><!-- /header -->
         <div role="main" class="ui-content vertical-center">
             <h1>Name</h1>
             <iframe class="w100per" style="height:65vh;" src="http://biasmv.github.io/pv/demo.html"></iframe>
-        </div>
+        </div><!-- /main -->
         <div data-role="footer">
             <div class="ui-grid-b" style="text-align: center;">
                 <div class="ui-block-a">
@@ -59,12 +58,12 @@
                     </a>
                 </div>
                 <div class="ui-block-c">
-                    <a href="#" class="ui-shadow ui-btn ui-mini ui-btn-inline w100per">
+                    <a href="#publication" data-rel="popup" data-position-to="window"  class="ui-shadow ui-btn ui-mini ui-btn-inline w100per">
                         Publication
                     </a>
                 </div>
             </div>
-        </div>
+        </div><!-- /footer -->
         <div data-role="panel" data-position="right" data-display="overlay" data-theme="a" id="nav-panelConfig">
             <ul data-role="listview">
                 <li data-icon="delete"><a href="#" data-rel="close">Close menu</a></li>
@@ -76,9 +75,16 @@
                 <li><a href="#panel-fixed-page2">Trace</a></li>
             </ul>
         </div><!-- /panel -->
-    </div>
-    <!-- -->
-    <script type="text/javascript" src="cordova.js"></script>
+        <div data-role="popup" id="publication" data-overlay-theme="b" data-theme="a" data-corners="false">
+            <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
+        <div id="popupPublication">
+
+        </div>
+        aqui hay info
+        </div>
+    </div><!-- /page -->
+    <!-- 
+    <script type="text/javascript" src="cordova.js"></script>-->
     <script type="text/javascript" src="js/index.js"></script>
 </body>
 </html>

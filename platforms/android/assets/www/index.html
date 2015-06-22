@@ -9,10 +9,11 @@
     <link rel="stylesheet" type="text/css" href="css/index.css" />
     <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
     <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <!--<script type="text/javascript" src="js/biojs-vis-pmccitation.js"></script>-->
     <title>P3D</title>
 </head>
 <body>
-    <!-- HOME PAGE -->
+    <!-------------------------- PAGE 1: HOME -------------------------->
     <div data-role="page" id="home">
         <div data-role="header">
             <h1>Home</h1>
@@ -20,33 +21,71 @@
         </div>
         <div role="main" class="ui-content vertical-center">
             <div>
-                <label for="search">Search Input:</label>
+                <p>Search Input:</p>
                 <input type="search" name="structure" id="search" value="" placeholder="Structure Name" />
                 <a href="#viewer" class="ui-btn" data-transition="fade" id="btnGraph">Graph</a>
             </div>
-            
         </div>
         <div data-role="footer">
             <h1>Footer</h1>
         </div>
         <div data-role="panel" data-position="right" data-display="overlay" data-theme="a" id="nav-panelHistory">
             <ul data-role="listview" id="historyList">
-                <li data-icon="delete"><a href="#" data-rel="close">Close menu</a></li>
-                <!-- NOTA!!! : AQUI TOCA CARGAR DINAMICAMENTE EL HISTORIAL -->
+                <li data-icon="delete"><a href="#" data-rel="close">Close history</a></li>
+                <!-- NOTA: AQUI CARGA DINAMICAMENTE EL HISTORIAL -->
             </ul>
         </div><!-- /panel -->
-    </div>
-
-    <!-- VIEWER PAGE -->
+    </div><!-- /page -->
+    <!-------------------------- PAGE 2: VIEWER -------------------------->
     <div data-role="page" class="ui-page" id="viewer">
         <div data-role="header" data-add-back-btn="true">
             <h1>P3D Viewer</h1>
             <a href="#nav-panelConfig" data-icon="gear" class="ui-btn-right">Views</a>
-        </div>
+        </div><!-- /header -->
         <div role="main" class="ui-content vertical-center">
             <h1>Name</h1>
-            <iframe class="w100per" style="height:65vh;" src="http://192.168.43.114:8000/"></iframe>
-        </div>
+            <iframe class="w100per" style="height:65vh;" src="http://biasmv.github.io/pv/demo.html"></iframe>
+        </div><!-- /main -->
+        <div data-role="footer">
+            <div class="ui-grid-b" style="text-align: center;">
+                <div class="ui-block-a">
+                    <a href="#" class="ui-shadow ui-btn ui-mini ui-btn-inline w100per">
+                        DSSP
+                    </a>
+                </div>
+                <div class="ui-block-b">
+                    <a href="#" class="ui-shadow ui-btn ui-mini ui-btn-inline w100per">
+                        Sequence
+                    </a>
+                </div>
+                <div class="ui-block-c">
+                    <a href="#publication" class="ui-shadow ui-btn ui-mini ui-btn-inline w100per">
+                        Publication
+                    </a>
+                </div>
+            </div>
+        </div><!-- /footer -->
+        <div data-role="panel" data-position="right" data-display="overlay" data-theme="a" id="nav-panelConfig">
+            <ul data-role="listview">
+                <li data-icon="delete"><a href="#" data-rel="close">Close menu</a></li>
+                <li><a href="#panel-fixed-page2">Cartoon</a></li>
+                <li><a href="#panel-fixed-page2">Tube</a></li>
+                <li><a href="#panel-fixed-page2">Lines</a></li>
+                <li><a href="#panel-fixed-page2">Line Trace</a></li>
+                <li><a href="#panel-fixed-page2">Smooth Line Trace</a></li>
+                <li><a href="#panel-fixed-page2">Trace</a></li>
+            </ul>
+        </div><!-- /panel -->
+    </div><!-- /page -->
+    <!-------------------------- PAGE 3: PUBLICATION -------------------------->
+    <div data-role="page" class="ui-page" id="publication">
+        <div data-role="header" data-add-back-btn="true">
+            <h1>P3D Publication abstract</h1>
+        </div><!-- /header -->
+        <div role="main" class="ui-content vertical-center">
+            <h1>Name</h1>
+            <div id="citationDiv"></div>
+        </div><!-- /main -->
         <div data-role="footer">
             <div class="ui-grid-b" style="text-align: center;">
                 <div class="ui-block-a">
@@ -65,20 +104,8 @@
                     </a>
                 </div>
             </div>
-        </div>
-        <div data-role="panel" data-position="right" data-display="overlay" data-theme="a" id="nav-panelConfig">
-            <ul data-role="listview">
-                <li data-icon="delete"><a href="#" data-rel="close">Close menu</a></li>
-                <li><a href="#panel-fixed-page2">Cartoon</a></li>
-                <li><a href="#panel-fixed-page2">Tube</a></li>
-                <li><a href="#panel-fixed-page2">Lines</a></li>
-                <li><a href="#panel-fixed-page2">Line Trace</a></li>
-                <li><a href="#panel-fixed-page2">Smooth Line Trace</a></li>
-                <li><a href="#panel-fixed-page2">Trace</a></li>
-            </ul>
-        </div><!-- /panel -->
-    </div>
-
+        </div><!-- /footer -->
+    </div><!-- /page -->
     <!-- 
     <script type="text/javascript" src="cordova.js"></script>-->
     <script type="text/javascript" src="js/index.js"></script>
