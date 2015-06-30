@@ -11,11 +11,25 @@ body,
 .w100per{
   width: 100%;
 }
+.justify{
+  text-align: justify !important;  
+}
+.no-shadow{
+  text-shadow: none !important;
+}
 .ui-page,
 .ui-page * {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
+}
+div#dsspMain {
+padding: 0 10px;
+background: white;
+}
+img#dsspIMG {
+width: 100%;
+min-height: 100%;
 }
 .ui-mini {
 margin: .3em !important;
@@ -51,5 +65,4 @@ margin: .3em !important;
 }
 #popupPublication{
   height:80vh;
-  width: 80vh;
 }

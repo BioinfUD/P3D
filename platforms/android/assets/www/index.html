@@ -9,7 +9,7 @@
     <link rel="stylesheet" type="text/css" href="css/index.css" />
     <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
     <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
-    <!--<script type="text/javascript" src="js/biojs-vis-pmccitation.js"></script>-->
+    <script src="js/trunk8.min.js"></script>
     <title>P3D</title>
 </head>
 <body>
@@ -22,8 +22,9 @@
         <div role="main" class="ui-content vertical-center">
             <div>
                 <p>Search Input:</p>
-                <input type="search" name="structure" id="search" value="" placeholder="Structure Name" />
-                <a href="#viewer" class="ui-btn" data-transition="fade" id="btnGraph">Graph</a>
+                <input type="search" name="structure" id="search" value="" placeholder="Structure Name"/>
+                <a class="ui-btn" data-theme="b" data-textonly="true" data-textvisible="true" data-msgtext="There is no text for search" id="btnGraph">Graph</a>
+
             </div>
         </div>
         <div data-role="footer">
@@ -49,19 +50,13 @@
         <div data-role="footer">
             <div class="ui-grid-b" style="text-align: center;">
                 <div class="ui-block-a">
-                    <a href="#" class="ui-shadow ui-btn ui-mini ui-btn-inline w100per">
-                        DSSP
-                    </a>
+                    <a href="#dssp" data-transition="slide" class="ui-shadow ui-btn ui-mini ui-btn-inline w100per">DSSP</a>
                 </div>
                 <div class="ui-block-b">
-                    <a href="#" class="ui-shadow ui-btn ui-mini ui-btn-inline w100per">
-                        Sequence
-                    </a>
+                    <a href="#sequence" data-transition="slide" class="ui-shadow ui-btn ui-mini ui-btn-inline w100per">Sequence</a>
                 </div>
                 <div class="ui-block-c">
-                    <a href="#publication" class="ui-shadow ui-btn ui-mini ui-btn-inline w100per">
-                        Publication
-                    </a>
+                    <a href="#publication" data-transition="slide" data-position-to="window"  class="ui-shadow ui-btn ui-mini ui-btn-inline w100per">Publication</a>
                 </div>
             </div>
         </div><!-- /footer -->
@@ -76,35 +71,41 @@
                 <li><a href="#panel-fixed-page2">Trace</a></li>
             </ul>
         </div><!-- /panel -->
-    </div><!-- /page -->
+    </div>
     <!-------------------------- PAGE 3: PUBLICATION -------------------------->
     <div data-role="page" class="ui-page" id="publication">
+        <!-- CONTENIDO DE LA PUBLICACION -->
         <div data-role="header" data-add-back-btn="true">
-            <h1>P3D Publication abstract</h1>
+            <h1>Publication</h1>
         </div><!-- /header -->
         <div role="main" class="ui-content vertical-center">
-            <h1>Name</h1>
-            <div id="citationDiv"></div>
+            <h4 id="pubTitle" class="justify no-shadow"></h4>
+            <p id="pubAbstract" class="truncate justify no-shadow"></p>
         </div><!-- /main -->
-        <div data-role="footer">
-            <div class="ui-grid-b" style="text-align: center;">
-                <div class="ui-block-a">
-                    <a href="#" class="ui-shadow ui-btn ui-mini ui-btn-inline w100per">
-                        DSSP
-                    </a>
-                </div>
-                <div class="ui-block-b">
-                    <a href="#" class="ui-shadow ui-btn ui-mini ui-btn-inline w100per">
-                        Sequence
-                    </a>
-                </div>
-                <div class="ui-block-c">
-                    <a href="#" class="ui-shadow ui-btn ui-mini ui-btn-inline w100per">
-                        Publication
-                    </a>
-                </div>
-            </div>
-        </div><!-- /footer -->
+        <div data-role="footer"></div>
+    </div><!-- /page -->
+    <!-------------------------- PAGE 4: DSSP -------------------------->
+    <div data-role="page" class="ui-page" id="dssp">
+        <!-- CONTENIDO DE LA PUBLICACION -->
+        <div data-role="header" data-add-back-btn="true">
+            <h1>Publication</h1>
+        </div><!-- /header -->
+        <div role="main" class="ui-content vertical-center" id="dsspMain">
+            <img src="" id="dsspIMG"/>
+        </div><!-- /main -->
+        <div data-role="footer"></div>
+    </div><!-- /page -->
+    <!-------------------------- PAGE 5: SECUENCE -------------------------->
+    <div data-role="page" class="ui-page" id="sequence">
+        <!-- CONTENIDO DE LA PUBLICACION -->
+        <div data-role="header" data-add-back-btn="true">
+            <h1>Publication</h1>
+        </div><!-- /header -->
+        <div role="main" class="ui-content vertical-center">
+            <h4 id="pubTitle" class="justify no-shadow"></h4>
+            <p id="pubAbstract" class="truncate justify no-shadow"></p>
+        </div><!-- /main -->
+        <div data-role="footer"></div>
     </div><!-- /page -->
     <!-- 
     <script type="text/javascript" src="cordova.js"></script>-->

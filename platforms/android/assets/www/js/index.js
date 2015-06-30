@@ -3,18 +3,71 @@ $('#aaa').click(function () {
 });
 
 $('#btnGraph').click(function () {
+    //capturo el valor ingresado
     var valStructure = $("#search").val();
-    var db = window.openDatabase("Database", "1.0", "History", 20000);
-    db.transaction(addItem, errorCB, successCB);
-    onDeviceReady();
-    getPMC(valStructure)
+    //si no se ingresa nada, no lo deja continuar
+    if(valStructure == ""){
+        console.log("ALERTA: no se introdujo texto");
+        setTimeout(function(){
+            console.log("ACCION: mostrando loader");
+          $.mobile.loading( 'show', {
+                theme: "b", 
+                text: "Textbox is empty",
+                textVisible: true, 
+                textonly: true
+            });
+        }, 1);
+        setTimeout(function(){
+            console.log("ACCION: ocultando loader");
+            $.mobile.loading('hide');
+        }, 2000);
+    }else{
+        setTimeout(function () {
+            $(':mobile-pagecontainer').pagecontainer('change', '#viewer', {
+                transition: 'fade',
+                changeHash: true,
+                reverse: true,
+                showLoadMsg: false
+            });
+        }, 1000);
+        var db = window.openDatabase("Database", "1.0", "History", 20000);
+        db.transaction(addItem, errorCB, successCB);
+        onDeviceReady(); // esto se debe comentar
+        getPMC(valStructure);
+        getDSSP(valStructure);
+    }
 });
 window.addEventListener('load', function() {
     document.body.addEventListener('touchmove', function(e) {
         e.preventDefault();
     }, false);
 }, false);
-/* --- BIOJS PMC Citation component  --- */
+/* --- GET THE INFO FOR THE STRUCTURE  --- */
+function toLetters(num) {
+    "use strict";
+    var mod = num % 26,
+        pow = num / 26 | 0,
+        out = mod ? String.fromCharCode(64 + mod) : (--pow, 'Z');
+    return pow ? toLetters(pow) + out : out;
+}
+function getDSSP(structure){
+    $( "#dsspMain" ).empty();
+    for (var i = 1; i < 8; i++) {
+        chain = toLetters(i);
+        dsspURL ="http://www.rcsb.org/pdb/explore/remediatedChain.do?structureId="+structure+"&chainId="+chain;
+        console.log('intentando obtener la siguiente imagen: '+dsspURL);
+        var img = new Image();
+        $(img).load(function(){
+            $('#dsspMain').append($(this));
+        }).attr({
+            src: dsspURL
+        }).error(function(){
+            console.log('no se pudo obtener la imagen, intentando de nuevo');
+        //do something if image cannot load
+        });  
+    };
+}
+
 function getPMC(structure){
     // get the pub ID through the RCSB site
     structureURL = "http://www.rcsb.org/pdb/files/"+structure+"-noatom.xml"
@@ -23,22 +76,47 @@ function getPMC(structure){
         $xml = $(xmlDoc),
         $pubId = $xml.find("pdbx_database_id_PubMed");
         pcmID = $pubId.text();
-        console.log("el id de la publicacion es:"+pcmID)
-        // use the pcmcitation component to get and display the PUB
-        var citationDiv = document.getElementById('citationDiv');
-        var citation = require("biojs-vis-pmccitation");
-        var instance = new citation.Citation({
-            target: citationDiv.id,
-            source: citation.Citation.MED_SOURCE,
-            citation_id: pcmID,
-            width: 400,
-            //proxyUrl: 'https://cors-anywhere.herokuapp.com/',
-            displayStyle: citation.Citation.FULL_STYLE,
-            elementOrder: citation.Citation.TITLE_FIRST,
-            showAbstract: true
-        }); 
-        //triggers the citation data loading process that will use the Europe PMC RESTFUL Web service
-        instance.load();
+        if(pcmID == ""){
+            console.log("No hay un ID PubMed");
+            /*
+            Falta: 
+            1. poner un mensaje diciendo que no hay
+            un ID de PubMed
+            */
+        }else{
+            publicationURL = "http://www.ncbi.nlm.nih.gov/pubmed/"+pcmID+"?report=xml&format=text"
+            $.get(publicationURL, function(data, status){
+                // convierto el html en xml
+                prexmlPub = $.parseXML(data),
+                $preXmlpub = $(prexmlPub),
+                $xmlText = $preXmlpub.find("pre");
+                // convierto el xml en objetos
+                xmlPub = $.parseXML($xmlText.text()),
+                $xmlpub = $(xmlPub),
+                $title = $xmlpub.find("ArticleTitle");
+                $abstract = $xmlpub.find("AbstractText");
+                // consigo todos los autores del articulo
+                $xmlpub.find("Author").each(function(){
+                    console.log($(this).find("LastName").text());
+                    console.log($(this).find("Initials").text());
+                });
+                $('#pubTitle').text($title.text());
+                var shortAbstract = jQuery.trim($abstract.text()).substring(0, 600).trim(this) + "...";
+                $('#pubAbstract').text(shortAbstract);
+            })
+            .done(function() {
+                console.log("SI se pudo conseguir la publicacion");
+            })
+            .fail(function() {
+                console.log("NO se pudo conseguir la publicacion");
+            });
+        }
+    })
+    .done(function() {
+        console.log("SI se pudo conseguir la estructura");
+    })
+    .fail(function() {
+        console.log("NO se pudo conseguir la estructura");
     });
 }
 
@@ -74,7 +152,7 @@ function errorCB(err) {
 }
 // Transaction success callback
 function successCB() {
-    console.log("success!");
+    console.log("consulta a BD exitosa");
 }
 function querySuccess(tx, results) {
     var len = results.rows.length;
