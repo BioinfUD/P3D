@@ -9,12 +9,11 @@
     <link rel="stylesheet" type="text/css" href="css/index.css" />
     <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
     <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
-    <script src="js/trunk8.min.js"></script>
     <title>P3D</title>
 </head>
 <body>
     <!-------------------------- PAGE 1: HOME -------------------------->
-    <div data-role="page" id="home">
+    <div data-role="page" id="home" ontouchmove="touchMove(event)">
         <div data-role="header">
             <h1>Home</h1>
             <a href="#nav-panelHistory" data-transition="pop" data-rel="popup"data-icon="clock" class="ui-btn-right">History</a>
@@ -38,7 +37,7 @@
         </div><!-- /panel -->
     </div><!-- /page -->
     <!-------------------------- PAGE 2: VIEWER -------------------------->
-    <div data-role="page" class="ui-page" id="viewer">
+    <div data-role="page" class="ui-page" id="viewer" ontouchmove="touchMove(event)">
         <div data-role="header" data-add-back-btn="true">
             <h1>P3D Viewer</h1>
             <a href="#nav-panelConfig" data-icon="gear" class="ui-btn-right">Views</a>
@@ -73,7 +72,7 @@
         </div><!-- /panel -->
     </div>
     <!-------------------------- PAGE 3: PUBLICATION -------------------------->
-    <div data-role="page" class="ui-page" id="publication">
+    <div data-role="page" class="ui-page" id="publication" ontouchmove="touchMove(event)">
         <!-- CONTENIDO DE LA PUBLICACION -->
         <div data-role="header" data-add-back-btn="true">
             <h1>Publication</h1>
@@ -88,10 +87,9 @@
     <div data-role="page" class="ui-page" id="dssp">
         <!-- CONTENIDO DE LA PUBLICACION -->
         <div data-role="header" data-add-back-btn="true">
-            <h1>Publication</h1>
+            <h1>DSSP</h1>
         </div><!-- /header -->
         <div role="main" class="ui-content vertical-center" id="dsspMain">
-            <img src="" id="dsspIMG"/>
         </div><!-- /main -->
         <div data-role="footer"></div>
     </div><!-- /page -->

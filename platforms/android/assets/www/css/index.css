@@ -23,6 +23,14 @@ body,
   -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
+div#dsspMain {
+padding: 0 10px;
+background: white;
+}
+img#dsspIMG {
+width: 100%;
+min-height: 100%;
+}
 .ui-mini {
 margin: .3em !important;
 }

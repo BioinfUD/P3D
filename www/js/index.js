@@ -1,7 +1,6 @@
 $('#aaa').click(function () {
     $('#search').val("hola");
 });
-
 $('#btnGraph').click(function () {
     //capturo el valor ingresado
     var valStructure = $("#search").val();
@@ -35,9 +34,32 @@ $('#btnGraph').click(function () {
         onDeviceReady(); // esto se debe comentar
         getPMC(valStructure);
         getDSSP(valStructure, 1);
+        getSeq(valStructure);
     }
 });
  /*--- GET THE INFO FOR THE STRUCTURE  --- */
+function getSeq (structure) {
+    var yourDiv = document.getElementById('seqMain');
+    var Seq = require("biojs-vis-sequence");
+    var theSequence = '111111111122222222223333333333444444444455555555556666666666111111111122222222223333333333444444444455555555556666666666';
+    yourDiv.textContent = "";
+    console.log('se va a cargar la secuencia');
+    var mySequence = new Seq({
+      sequence : theSequence,
+      target : yourDiv.id,
+      format : 'CODATA',
+      formatOptions : {
+        title:false,
+        footer:false
+      },
+      id : structure
+    });
+    console.log('se cargo la secuencia');
+    mySequence.onAll(function(name,data){
+      console.log(arguments);
+    });
+    
+}
 function toLetters(num) {
     "use strict";
     var mod = num % 26,

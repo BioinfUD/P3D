@@ -1,7 +1,9 @@
 $('#aaa').click(function () {
     $('#search').val("hola");
 });
-
+$(document).bind('mobileinit', function(){ 
+       $.mobile.metaViewportContent = 'width=device-width, minimum-scale=1'; 
+});
 $('#btnGraph').click(function () {
     //capturo el valor ingresado
     var valStructure = $("#search").val();
@@ -34,15 +36,10 @@ $('#btnGraph').click(function () {
         db.transaction(addItem, errorCB, successCB);
         onDeviceReady(); // esto se debe comentar
         getPMC(valStructure);
-        getDSSP(valStructure);
+        getDSSP(valStructure, 1);
     }
 });
-window.addEventListener('load', function() {
-    document.body.addEventListener('touchmove', function(e) {
-        e.preventDefault();
-    }, false);
-}, false);
-/* --- GET THE INFO FOR THE STRUCTURE  --- */
+ /*--- GET THE INFO FOR THE STRUCTURE  --- */
 function toLetters(num) {
     "use strict";
     var mod = num % 26,
@@ -50,22 +47,21 @@ function toLetters(num) {
         out = mod ? String.fromCharCode(64 + mod) : (--pow, 'Z');
     return pow ? toLetters(pow) + out : out;
 }
-function getDSSP(structure){
+function getDSSP(structure, num){
     $( "#dsspMain" ).empty();
-    for (var i = 1; i < 8; i++) {
-        chain = toLetters(i);
-        dsspURL ="http://www.rcsb.org/pdb/explore/remediatedChain.do?structureId="+structure+"&chainId="+chain;
+    chain = toLetters(num);
+    dsspURL ="http://www.rcsb.org/pdb/explore/remediatedChain.do?structureId="+structure+"&chainId="+chain;
+    var img = new Image();
+    $(img).load(function(){
         console.log('intentando obtener la siguiente imagen: '+dsspURL);
-        var img = new Image();
-        $(img).load(function(){
-            $('#dsspMain').append($(this));
-        }).attr({
-            src: dsspURL
-        }).error(function(){
-            console.log('no se pudo obtener la imagen, intentando de nuevo');
-        //do something if image cannot load
-        });  
-    };
+        $('#dsspMain').append($(this));
+    }).attr({
+        src: dsspURL,
+        id: "dsspIMG"
+    }).error(function(){
+        console.log('no se pudo obtener la imagen, intentando de nuevo con otra "CHAIN"');
+        getDSSP(structure, ++num);
+    });  
 }
 
 function getPMC(structure){
@@ -126,6 +122,9 @@ function getPMC(structure){
 document.addEventListener("deviceready", onDeviceReady, false);
 // device APIs are available
 function onDeviceReady() {
+    touchMove = function(event) {
+        event.preventDefault();
+    }
     var db = window.openDatabase("Database", "1.0", "History", 2000000);
     db.transaction(createDB, errorCB, successCB);
     db.transaction(loadHistory, errorCB, successCB);
