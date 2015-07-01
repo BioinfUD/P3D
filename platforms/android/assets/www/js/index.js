@@ -1,12 +1,14 @@
 $('#aaa').click(function () {
     $('#search').val("hola");
 });
-$(document).bind('mobileinit', function(){ 
-       $.mobile.metaViewportContent = 'width=device-width, minimum-scale=1'; 
-});
 $('#btnGraph').click(function () {
     //capturo el valor ingresado
     var valStructure = $("#search").val();
+    //limpio el contenido de los resultados
+    $("#dsspMain").empty();
+    $("seqMain").empty();
+    $("pubTitle").empty();
+    $("pubAbstract").empty();
     //si no se ingresa nada, no lo deja continuar
     if(valStructure == ""){
         console.log("ALERTA: no se introdujo texto");
@@ -35,11 +37,42 @@ $('#btnGraph').click(function () {
         var db = window.openDatabase("Database", "1.0", "History", 20000);
         db.transaction(addItem, errorCB, successCB);
         onDeviceReady(); // esto se debe comentar
+        loadGraphics(valStructure);
         getPMC(valStructure);
         getDSSP(valStructure, 1);
     }
 });
  /*--- GET THE INFO FOR THE STRUCTURE  --- */
+ function loadGraphics(structureID) {
+    //viewer.clear();
+    pdbURL = "http://www.rcsb.org/pdb/files/"+structureID+".pdb";
+    pv.io.fetchPdb(pdbURL, function(structure) {
+      viewer.cartoon('protein', structure, { color : color.ssSuccession() });
+      var ligands = structure.select({ rnames : ['SAH', 'RVP'] });
+      viewer.ballsAndSticks('ligands', ligands);
+      viewer.centerOn(structure);
+    });
+}
+
+function getSeq (structure, sequence) {
+    sequence = sequence.replace("\n","").replace("\n","").replace("\n","").replace("\n","").replace("\n","");
+    var Seq = require("biojs-vis-sequence");
+    var mySequence = new Seq({
+      sequence : sequence,
+      target : 'seqMain',
+      format : 'CODATA',
+      columns : {
+        size : 18,
+        spacedEach : 6
+      },
+      formatOptions : {
+        title:false,
+        footer:false
+      },
+      id : structure
+    });
+    console.log('se cargo la secuencia');
+}
 function toLetters(num) {
     "use strict";
     var mod = num % 26,
@@ -48,7 +81,6 @@ function toLetters(num) {
     return pow ? toLetters(pow) + out : out;
 }
 function getDSSP(structure, num){
-    $( "#dsspMain" ).empty();
     chain = toLetters(num);
     dsspURL ="http://www.rcsb.org/pdb/explore/remediatedChain.do?structureId="+structure+"&chainId="+chain;
     var img = new Image();
@@ -61,7 +93,7 @@ function getDSSP(structure, num){
     }).error(function(){
         console.log('no se pudo obtener la imagen, intentando de nuevo con otra "CHAIN"');
         getDSSP(structure, ++num);
-    });  
+    });
 }
 
 function getPMC(structure){
@@ -71,6 +103,9 @@ function getPMC(structure){
         xmlDoc = $.parseXML(data),
         $xml = $(xmlDoc),
         $pubId = $xml.find("pdbx_database_id_PubMed");
+        $seq = $xml.find("pdbx_seq_one_letter_code_can");
+        console.log("la secuencia es: "+$seq.text());
+        getSeq(structure,$seq.text());
         pcmID = $pubId.text();
         if(pcmID == ""){
             console.log("No hay un ID PubMed");
@@ -122,9 +157,19 @@ function getPMC(structure){
 document.addEventListener("deviceready", onDeviceReady, false);
 // device APIs are available
 function onDeviceReady() {
+    //evito el scroll en ciertas aginas
     touchMove = function(event) {
         event.preventDefault();
     }
+    //configuro y ejemplifico el pv.Viewer
+    viewer = pv.Viewer(document.getElementById('graph'), { 
+        width : 600, height: 600, antialias : true, 
+        outline : true, quality : 'medium', style : 'hemilight',
+        background : '#fff', animateTime: 500, doubleClick : null
+    });
+    window.addEventListener('resize', function() {
+        viewer.fitParent();
+    });
     var db = window.openDatabase("Database", "1.0", "History", 2000000);
     db.transaction(createDB, errorCB, successCB);
     db.transaction(loadHistory, errorCB, successCB);
@@ -161,4 +206,71 @@ function querySuccess(tx, results) {
         $("#historyList").html(listaActual+"<li><a id='"+results.rows.item(i).STRUCTURE+"' class='ui-btn ui-btn-icon-right ui-icon-carat-r historyItem' href='#'>"+results.rows.item(i).STRUCTURE+"</a></li>");
     }
     return false;
+}
+
+function points() {
+  viewer.clear();
+  var go = viewer.points('structure', structure, {
+                         color: color.byResidueProp('num'),
+                         showRelated : '1' });
+  go.setSelection(structure.select({ rnumRange : [15,20] }));
+}
+
+function lines() {
+  viewer.clear();
+  var go = viewer.lines('structure', structure, {
+              color: color.byResidueProp('num'),
+              showRelated : '1' });
+  go.setSelection(structure.select({ rnumRange : [15,20] }));
+}
+
+function cartoon() {
+  viewer.clear();
+  var go = viewer.cartoon('structure', structure, {
+      color : color.ssSuccession(), showRelated : '1',
+  });
+  go.setSelection(structure.select({ rnumRange : [15,20] }));
+  
+  var rotation = viewpoint.principalAxes(go);
+  viewer.setRotation(rotation)
+}
+
+function lineTrace() {
+  viewer.clear();
+  var go = viewer.lineTrace('structure', structure, { showRelated : '1' });
+  go.setSelection(structure.select({ rnumRange : [15,20] }));
+}
+
+function spheres() {
+  viewer.clear();
+  var go = viewer.spheres('structure', structure, { showRelated : '1' });
+  go.setSelection(structure.select({ rnumRange : [15,20] }));
+}
+
+function sline() {
+  viewer.clear();
+  var go = viewer.sline('structure', structure,
+          { color : color.uniform('red'), showRelated : '1'});
+  go.setSelection(structure.select({ rnumRange : [15,20] }));
+}
+
+function tube() {
+  viewer.clear();
+  var go = viewer.tube('structure', structure);
+  viewer.lines('structure.ca', structure.select({aname :'CA'}),
+            { color: color.uniform('blue'), lineWidth : 1,
+              showRelated : '1' });
+  go.setSelection(structure.select({ rnumRange : [15,20] }));
+}
+
+function trace() {
+  viewer.clear();
+  var go = viewer.trace('structure', structure, { showRelated : '1' });
+  go.setSelection(structure.select({ rnumRange : [15,20] }));
+
+}
+function ballsAndSticks() {
+  viewer.clear();
+  var go = viewer.ballsAndSticks('structure', structure, { showRelated : '1' });
+  go.setSelection(structure.select({ rnumRange : [15,20] }));
 }

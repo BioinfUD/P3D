@@ -31,6 +31,11 @@ img#dsspIMG {
 width: 100%;
 min-height: 100%;
 }
+div# {
+    -ms-transform: rotate(20deg); /* IE 9 */
+    -webkit-transform: rotate(20deg); /* Safari */
+    transform: rotate(20deg);
+}
 .ui-mini {
 margin: .3em !important;
 }

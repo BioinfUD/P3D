@@ -1,14 +1,23 @@
-$('#aaa').click(function () {
-    $('#search').val("hola");
+function h(h) {
+  $('#search').val($(h).attr('id'));
+  $( "#nav-panelHistory" ).panel( "close" );
+}
+$('#nav-panelHistory').click(function () {
+  $( "#nav-panelHistory" ).panel( "close" );
 });
 $('#btnGraph').click(function () {
     //capturo el valor ingresado
     var valStructure = $("#search").val();
+    //limpio el contenido de los resultados
+    $("#graph").empty();
+    $("#dsspMain").empty();
+    $("#seqMain").empty();
+    $("#pubTitle").empty();
+    $("#pubAbstract").empty();
     //si no se ingresa nada, no lo deja continuar
     if(valStructure == ""){
         console.log("ALERTA: no se introdujo texto");
         setTimeout(function(){
-            console.log("ACCION: mostrando loader");
           $.mobile.loading( 'show', {
                 theme: "b", 
                 text: "Textbox is empty",
@@ -17,7 +26,6 @@ $('#btnGraph').click(function () {
             });
         }, 1);
         setTimeout(function(){
-            console.log("ACCION: ocultando loader");
             $.mobile.loading('hide');
         }, 2000);
     }else{
@@ -28,26 +36,53 @@ $('#btnGraph').click(function () {
                 reverse: true,
                 showLoadMsg: false
             });
-        }, 1000);
+            $.mobile.loading( 'show', {
+                theme: "b", 
+                text: "Loading data from web server",
+                textVisible: true, 
+                textonly: false
+            });
+        }, 1);
         var db = window.openDatabase("Database", "1.0", "History", 20000);
         db.transaction(addItem, errorCB, successCB);
         onDeviceReady(); // esto se debe comentar
         getPMC(valStructure);
         getDSSP(valStructure, 1);
-        getSeq(valStructure);
+        loadGraphics(valStructure);
+        setTimeout(function(){
+            $.mobile.loading('hide');
+        }, 2000);
+
     }
 });
  /*--- GET THE INFO FOR THE STRUCTURE  --- */
-function getSeq (structure) {
-    var yourDiv = document.getElementById('seqMain');
+ function loadGraphics(structureID) {
+    viewer.clear();
+    pdbURL = "http://www.rcsb.org/pdb/files/"+structureID+".pdb";
+    pv.io.fetchPdb(pdbURL, function(structure) {
+      var ligand = structure.select({'rnames' : ['SAH', 'RVP']});
+      viewer.ballsAndSticks('structure.ligand', ligand, {});
+      viewer.centerOn(structure);
+      viewer.fitParent();
+      viewer.cartoon('protein', structure, { color : pv.color.ssSuccession(), showRelated : '1' });
+      
+    });
+    viewer.requestRedraw();
+    viewer.fitParent();
+    window.dispatchEvent(new Event('resize'));
+}
+
+function getSeq (structure, sequence) {
+    sequence = sequence.replace("\n","").replace("\n","").replace("\n","").replace("\n","").replace("\n","");
     var Seq = require("biojs-vis-sequence");
-    var theSequence = '111111111122222222223333333333444444444455555555556666666666111111111122222222223333333333444444444455555555556666666666';
-    yourDiv.textContent = "";
-    console.log('se va a cargar la secuencia');
     var mySequence = new Seq({
-      sequence : theSequence,
-      target : yourDiv.id,
+      sequence : sequence,
+      target : 'seqMain',
       format : 'CODATA',
+      columns : {
+        size : 18,
+        spacedEach : 6
+      },
       formatOptions : {
         title:false,
         footer:false
@@ -55,10 +90,7 @@ function getSeq (structure) {
       id : structure
     });
     console.log('se cargo la secuencia');
-    mySequence.onAll(function(name,data){
-      console.log(arguments);
-    });
-    
+    window.dispatchEvent(new Event('resize'));
 }
 function toLetters(num) {
     "use strict";
@@ -68,12 +100,10 @@ function toLetters(num) {
     return pow ? toLetters(pow) + out : out;
 }
 function getDSSP(structure, num){
-    $( "#dsspMain" ).empty();
     chain = toLetters(num);
     dsspURL ="http://www.rcsb.org/pdb/explore/remediatedChain.do?structureId="+structure+"&chainId="+chain;
     var img = new Image();
     $(img).load(function(){
-        console.log('intentando obtener la siguiente imagen: '+dsspURL);
         $('#dsspMain').append($(this));
     }).attr({
         src: dsspURL,
@@ -81,7 +111,9 @@ function getDSSP(structure, num){
     }).error(function(){
         console.log('no se pudo obtener la imagen, intentando de nuevo con otra "CHAIN"');
         getDSSP(structure, ++num);
-    });  
+    });
+    console.log('se consiguio la imagen de DSSP: '+dsspURL);
+    window.dispatchEvent(new Event('resize'));
 }
 
 function getPMC(structure){
@@ -91,6 +123,8 @@ function getPMC(structure){
         xmlDoc = $.parseXML(data),
         $xml = $(xmlDoc),
         $pubId = $xml.find("pdbx_database_id_PubMed");
+        $seq = $xml.find("pdbx_seq_one_letter_code_can");
+        getSeq(structure,$seq.text());
         pcmID = $pubId.text();
         if(pcmID == ""){
             console.log("No hay un ID PubMed");
@@ -113,8 +147,8 @@ function getPMC(structure){
                 $abstract = $xmlpub.find("AbstractText");
                 // consigo todos los autores del articulo
                 $xmlpub.find("Author").each(function(){
-                    console.log($(this).find("LastName").text());
-                    console.log($(this).find("Initials").text());
+                    //console.log($(this).find("LastName").text());
+                    //console.log($(this).find("Initials").text());
                 });
                 $('#pubTitle').text($title.text());
                 var shortAbstract = jQuery.trim($abstract.text()).substring(0, 600).trim(this) + "...";
@@ -122,17 +156,21 @@ function getPMC(structure){
             })
             .done(function() {
                 console.log("SI se pudo conseguir la publicacion");
+                window.dispatchEvent(new Event('resize'));
             })
             .fail(function() {
                 console.log("NO se pudo conseguir la publicacion");
+                window.dispatchEvent(new Event('resize'));
             });
         }
     })
     .done(function() {
         console.log("SI se pudo conseguir la estructura");
+        window.dispatchEvent(new Event('resize'));
     })
     .fail(function() {
         console.log("NO se pudo conseguir la estructura");
+        window.dispatchEvent(new Event('resize'));
     });
 }
 
@@ -142,9 +180,20 @@ function getPMC(structure){
 document.addEventListener("deviceready", onDeviceReady, false);
 // device APIs are available
 function onDeviceReady() {
+    //evito el scroll en ciertas aginas
     touchMove = function(event) {
         event.preventDefault();
     }
+    //configuro y ejemplifico el pv.Viewer
+    viewer = pv.Viewer(document.getElementById('graph'), { 
+        width : 500, height: 500, antialias : true, 
+        outline : true, quality : 'medium', style : 'hemilight',
+        background : '#fff', animateTime: 500, doubleClick : null
+    });
+    window.addEventListener('resize', function() {
+        viewer.fitParent();
+        console.log("resize");
+    });
     var db = window.openDatabase("Database", "1.0", "History", 2000000);
     db.transaction(createDB, errorCB, successCB);
     db.transaction(loadHistory, errorCB, successCB);
@@ -175,10 +224,10 @@ function successCB() {
 }
 function querySuccess(tx, results) {
     var len = results.rows.length;
-    $("#historyList").html('<li data-icon="delete"><a href="#" data-rel="close" class="ui-btn ui-btn-icon-right ui-icon-delete">Close menu</a></li>');
+    $("#historyList").html('<li ><a href="#" data-rel="close" class="ui-btn ui-btn-icon-right ui-icon-delete">Close History</a></li>');
     for(var i = 0; i < len; i ++) {
         var listaActual = $("#historyList").html();
-        $("#historyList").html(listaActual+"<li><a id='"+results.rows.item(i).STRUCTURE+"' class='ui-btn ui-btn-icon-right ui-icon-carat-r historyItem' href='#'>"+results.rows.item(i).STRUCTURE+"</a></li>");
+        $("#historyList").html(listaActual+"<li onclick='h(this)' id='"+results.rows.item(i).STRUCTURE+"' ><a id='"+results.rows.item(i).STRUCTURE+"' class='ui-btn ui-btn-icon-right ui-icon-carat-r historyItem' href='#'>"+results.rows.item(i).STRUCTURE+"</a></li>");
     }
     return false;
 }

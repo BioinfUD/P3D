@@ -9,6 +9,7 @@
     <link rel="stylesheet" type="text/css" href="css/index.css" />
     <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
     <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <script type="text/javascript" src="js/biojs-vis-sequence.js"></script>
     <title>P3D</title>
 </head>
 <body>
@@ -44,7 +45,7 @@
         </div><!-- /header -->
         <div role="main" class="ui-content vertical-center">
             <h1>Name</h1>
-            <iframe class="w100per" style="height:65vh;" src="http://biasmv.github.io/pv/demo.html"></iframe>
+            <div style="height:65vh; width:100%;" id="graph"></div>
         </div><!-- /main -->
         <div data-role="footer">
             <div class="ui-grid-b" style="text-align: center;">
@@ -93,20 +94,19 @@
         </div><!-- /main -->
         <div data-role="footer"></div>
     </div><!-- /page -->
-    <!-------------------------- PAGE 5: SECUENCE -------------------------->
+    <!-------------------------- PAGE 5: SEQUENCE -------------------------->
     <div data-role="page" class="ui-page" id="sequence">
         <!-- CONTENIDO DE LA PUBLICACION -->
         <div data-role="header" data-add-back-btn="true">
-            <h1>Publication</h1>
+            <h1>Sequence</h1>
         </div><!-- /header -->
-        <div role="main" class="ui-content vertical-center">
-            <h4 id="pubTitle" class="justify no-shadow"></h4>
-            <p id="pubAbstract" class="truncate justify no-shadow"></p>
+        <div role="main" class="ui-content" id="seqMain">
         </div><!-- /main -->
         <div data-role="footer"></div>
     </div><!-- /page -->
     <!-- 
     <script type="text/javascript" src="cordova.js"></script>-->
     <script type="text/javascript" src="js/index.js"></script>
+    <script type='text/javascript' src='js/bio-pv.min.js'></script>
 </body>
 </html>
