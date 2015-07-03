@@ -12,7 +12,7 @@ $('#btnGraph').click(function () {
     $("#graph").empty();
     $("#dsspMain").empty();
     $("#seqMain").empty();
-    $("#pubTitle").empty();
+    $("#pubTitle").text('The article is in process of publication, therefore does not have an ID in PubMed Central and the application can not get the information from this article.');
     $("#pubAbstract").empty();
     //si no se ingresa nada, no lo deja continuar
     if(valStructure == ""){
@@ -161,7 +161,6 @@ function getPMC(structure){
             })
             .fail(function() {
                 console.log("NO se pudo conseguir la publicacion");
-                $("#pubTitle").text('The article is in process of publication, therefore does not have an ID in PubMed Central and the application can not get the information from this article.');
                 window.dispatchEvent(new Event('resize'));
             });
         }
