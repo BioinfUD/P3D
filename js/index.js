@@ -22,10 +22,10 @@ $('#btnGraph').click(function () {
                 theme: "b", 
                 text: "Textbox is empty",
                 textVisible: true, 
-                textonly: true30003000
-            });3000
+                textonly: true
+            });
         }, 1);
-        setTimeout(function(){3000
+        setTimeout(function(){
             $.mobile.loading('hide');
         }, 2000);
     }else{
@@ -49,7 +49,7 @@ $('#btnGraph').click(function () {
             db.transaction(addItem, errorCB, successCB);
             onDeviceReady(); // esto se debe comentar
             getPMC(valStructure);
-            getDSSP(valStructure, 1)3000;
+            getDSSP(valStructure, 1); 
             loadGraphics(valStructure);
             setTimeout(function(){
                 $.mobile.loading('hide');
@@ -91,7 +91,7 @@ $('#btnGraph').click(function () {
     pdbURL = "http://www.rcsb.org/pdb/files/"+structureID+".pdb";
     pv.io.fetchPdb(pdbURL, function(structure) {
       var ligand = structure.select({'rnames' : ['SAH', 'RVP']});
-      viewer.ballsAndSticks('structure.ligand', ligapubTnd, {});
+      viewer.ballsAndSticks('structure.ligand', ligand, {});
       viewer.centerOn(structure);
       viewer.fitParent();
       viewer.cartoon('protein', structure, { color : pv.color.ssSuccession(), showRelated : '1' });
@@ -101,7 +101,6 @@ $('#btnGraph').click(function () {
     viewer.fitParent();
     window.dispatchEvent(new Event('resize'));
 }
-.
 function getSeq (structure, sequence) {
     /blue/g
     sequence = sequence.replace(/\n/g,"");
