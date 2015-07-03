@@ -53,7 +53,6 @@ $('#btnGraph').click(function () {
         setTimeout(function(){
             $.mobile.loading('hide');
         }, 6000);
-
     }
 });
  /*--- GET THE INFO FOR THE STRUCTURE  --- */
@@ -162,6 +161,7 @@ function getPMC(structure){
             })
             .fail(function() {
                 console.log("NO se pudo conseguir la publicacion");
+                $("#pubTitle").text('The article is in process of publication, therefore does not have an ID in PubMed Central and the application can not get the information from this article.');
                 window.dispatchEvent(new Event('resize'));
             });
         }
