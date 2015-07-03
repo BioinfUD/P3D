@@ -29,7 +29,6 @@ $('#btnGraph').click(function () {
             $.mobile.loading('hide');
         }, 2000);
     }else{
-        if(exist(valStructure)){
             $('#structureNAME').text(valStructure);
             setTimeout(function () {
                 $(':mobile-pagecontainer').pagecontainer('change', '#viewer', {
@@ -54,20 +53,7 @@ $('#btnGraph').click(function () {
             setTimeout(function(){
                 $.mobile.loading('hide');
             }, 6000);
-        }else{//no existe la estrucutra, se debe mostrar un mensaje
-            setTimeout(function(){
-                $.mobile.loading( 'show', {
-                    theme: "b", 
-                    text: "The ID doesn't exist",
-                    textVisible: true, 
-                    textonly: true
-                });
-            }, 1);
-            setTimeout(function(){
-                $.mobile.loading('hide');
-                $("#search").val('');
-            }, 2000);
-        }
+        
     }
 });
  /*--- GET THE INFO FOR THE STRUCTURE  --- */
