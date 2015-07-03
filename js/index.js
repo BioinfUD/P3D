@@ -73,7 +73,8 @@ $('#btnGraph').click(function () {
 }
 
 function getSeq (structure, sequence) {
-    sequence = sequence.replace("\n","").replace("\n","").replace("\n","").replace("\n","").replace("\n","");
+    /blue/g
+    sequence = sequence.replace(/\n/g,"");
     var Seq = require("biojs-vis-sequence");
     var mySequence = new Seq({
       sequence : sequence,
