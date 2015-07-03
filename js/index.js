@@ -22,10 +22,10 @@ $('#btnGraph').click(function () {
                 theme: "b", 
                 text: "Textbox is empty",
                 textVisible: true, 
-                textonly: true
-            });
+                textonly: true30003000
+            });3000
         }, 1);
-        setTimeout(function(){
+        setTimeout(function(){3000
             $.mobile.loading('hide');
         }, 2000);
     }else{
@@ -49,7 +49,7 @@ $('#btnGraph').click(function () {
             db.transaction(addItem, errorCB, successCB);
             onDeviceReady(); // esto se debe comentar
             getPMC(valStructure);
-            getDSSP(valStructure, 1);
+            getDSSP(valStructure, 1)3000;
             loadGraphics(valStructure);
             setTimeout(function(){
                 $.mobile.loading('hide');
@@ -65,6 +65,7 @@ $('#btnGraph').click(function () {
             }, 1);
             setTimeout(function(){
                 $.mobile.loading('hide');
+                $("#search").val('');
             }, 2000);
         }
     }
