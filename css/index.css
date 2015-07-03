@@ -27,6 +27,9 @@ div#dsspMain {
 padding: 0 10px;
 background: white;
 }
+div#seqMain {
+text-shadow: none;
+}
 img#dsspIMG {
 width: 100%;
 min-height: 100%;

@@ -29,6 +29,7 @@ $('#btnGraph').click(function () {
             $.mobile.loading('hide');
         }, 2000);
     }else{
+        $('#structureNAME').text(valStructure);
         setTimeout(function () {
             $(':mobile-pagecontainer').pagecontainer('change', '#viewer', {
                 transition: 'fade',
