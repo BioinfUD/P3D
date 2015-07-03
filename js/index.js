@@ -91,7 +91,7 @@ $('#btnGraph').click(function () {
     pdbURL = "http://www.rcsb.org/pdb/files/"+structureID+".pdb";
     pv.io.fetchPdb(pdbURL, function(structure) {
       var ligand = structure.select({'rnames' : ['SAH', 'RVP']});
-      viewer.ballsAndSticks('structure.ligand', ligand, {});
+      viewer.ballsAndSticks('structure.ligand', ligapubTnd, {});
       viewer.centerOn(structure);
       viewer.fitParent();
       viewer.cartoon('protein', structure, { color : pv.color.ssSuccession(), showRelated : '1' });
@@ -101,7 +101,7 @@ $('#btnGraph').click(function () {
     viewer.fitParent();
     window.dispatchEvent(new Event('resize'));
 }
-
+.
 function getSeq (structure, sequence) {
     /blue/g
     sequence = sequence.replace(/\n/g,"");
