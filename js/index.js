@@ -2,6 +2,22 @@ function h(h) {
   $('#search').val($(h).attr('id'));
   $( "#nav-panelHistory" ).panel( "close" );
 }
+$('#dsspIMG').addEventListener('gesturechange',function(e){
+
+    if(e.scale>1){
+        //zoom in 
+        //increase the size of image according to the e.scale
+        alert('e.scale: '+e.scale);
+        console.log('e.scale: '+e.scale);
+    }
+
+    else if(e.scale<1){
+        //zoom out 
+        //decrease the size of image according to the e.scale
+        alert('e.scale: '+e.scale);
+        console.log('e.scale: '+e.scale);
+    }
+});
 $('#nav-panelHistory').click(function () {
   $( "#nav-panelHistory" ).panel( "close" );
 });
