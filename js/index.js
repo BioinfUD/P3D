@@ -51,7 +51,7 @@ $('#btnGraph').click(function () {
         loadGraphics(valStructure);
         setTimeout(function(){
             $.mobile.loading('hide');
-        }, 2000);
+        }, 6000);
 
     }
 });
