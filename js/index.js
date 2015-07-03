@@ -12,7 +12,7 @@ $('#btnGraph').click(function () {
     $("#graph").empty();
     $("#dsspMain").empty();
     $("#seqMain").empty();
-    $("#pubTitle").text('The article is in process of publication, therefore does not have an ID in PubMed Central and the application can not get the information from this article.');
+    $("#pubTitle").empty();
     $("#pubAbstract").empty();
     //si no se ingresa nada, no lo deja continuar
     if(valStructure == ""){
@@ -29,33 +29,62 @@ $('#btnGraph').click(function () {
             $.mobile.loading('hide');
         }, 2000);
     }else{
-        $('#structureNAME').text(valStructure);
-        setTimeout(function () {
-            $(':mobile-pagecontainer').pagecontainer('change', '#viewer', {
-                transition: 'fade',
-                changeHash: true,
-                reverse: true,
-                showLoadMsg: false
-            });
-            $.mobile.loading( 'show', {
-                theme: "b", 
-                text: "Loading data from web server",
-                textVisible: true, 
-                textonly: false
-            });
-        }, 1);
-        var db = window.openDatabase("Database", "1.0", "History", 20000);
-        db.transaction(addItem, errorCB, successCB);
-        onDeviceReady(); // esto se debe comentar
-        getPMC(valStructure);
-        getDSSP(valStructure, 1);
-        loadGraphics(valStructure);
-        setTimeout(function(){
-            $.mobile.loading('hide');
-        }, 6000);
+        if(exist(valStructure)){
+            $('#structureNAME').text(valStructure);
+            setTimeout(function () {
+                $(':mobile-pagecontainer').pagecontainer('change', '#viewer', {
+                    transition: 'fade',
+                    changeHash: true,
+                    reverse: true,
+                    showLoadMsg: false
+                });
+                $.mobile.loading( 'show', {
+                    theme: "b", 
+                    text: "Loading data from web server",
+                    textVisible: true, 
+                    textonly: false
+                });
+            }, 1);
+            var db = window.openDatabase("Database", "1.0", "History", 20000);
+            db.transaction(addItem, errorCB, successCB);
+            onDeviceReady(); // esto se debe comentar
+            getPMC(valStructure);
+            getDSSP(valStructure, 1);
+            loadGraphics(valStructure);
+            setTimeout(function(){
+                $.mobile.loading('hide');
+            }, 6000);
+        }else{//no existe la estrucutra, se debe mostrar un mensaje
+            setTimeout(function(){
+                $.mobile.loading( 'show', {
+                    theme: "b", 
+                    text: "The ID doesn't exist",
+                    textVisible: true, 
+                    textonly: true
+                });
+            }, 1);
+            setTimeout(function(){
+                $.mobile.loading('hide');
+            }, 2000);
+        }
     }
 });
  /*--- GET THE INFO FOR THE STRUCTURE  --- */
+ function exist(structure){
+    structureURL = "http://www.rcsb.org/pdb/files/"+structure+"-noatom.xml"
+    $.get(structureURL, function(data, status){
+    })
+    .done(function() {
+        console.log("La estructura si existe, se puede proseguir con la graficacion");
+        window.dispatchEvent(new Event('resize'));
+        return true;
+    })
+    .fail(function() {
+        console.log("La estructura no existe, se debe ingresar un ID valido");
+        window.dispatchEvent(new Event('resize'));
+        return false;
+    });
+ }
  function loadGraphics(structureID) {
     viewer.clear();
     pdbURL = "http://www.rcsb.org/pdb/files/"+structureID+".pdb";
