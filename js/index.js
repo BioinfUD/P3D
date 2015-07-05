@@ -29,6 +29,9 @@ $('#btnGraph').click(function () {
             $.mobile.loading('hide');
         }, 2000);
     }else{
+        structureURL = "http://www.rcsb.org/pdb/files/"+valStructure+"-noatom.xml"
+        $.get(structureURL, function(data, status){
+            console.log("SI EXISTE");
             $('#structureNAME').text(valStructure);
             setTimeout(function () {
                 $(':mobile-pagecontainer').pagecontainer('change', '#viewer', {
@@ -53,25 +56,25 @@ $('#btnGraph').click(function () {
             setTimeout(function(){
                 $.mobile.loading('hide');
             }, 6000);
+        })
+        .fail(function(status) {
+            console.log("NO EXISTE");
+            setTimeout(function(){
+              $.mobile.loading( 'show', {
+                    theme: "b", 
+                    text: "The ID doesn't exists in the database",
+                    textVisible: true, 
+                    textonly: true
+                });
+            }, 1);
+            setTimeout(function(){
+                $.mobile.loading('hide');
+            }, 2000);
+        });
         
     }
 });
  /*--- GET THE INFO FOR THE STRUCTURE  --- */
- function exist(structure){
-    structureURL = "http://www.rcsb.org/pdb/files/"+structure+"-noatom.xml"
-    $.get(structureURL, function(data, status){
-    })
-    .done(function() {
-        console.log("La estructura si existe, se puede proseguir con la graficacion");
-        window.dispatchEvent(new Event('resize'));
-        return true;
-    })
-    .fail(function() {
-        console.log("La estructura no existe, se debe ingresar un ID valido");
-        window.dispatchEvent(new Event('resize'));
-        return false;
-    });
- }
  function loadGraphics(structureID) {
     viewer.clear();
     pdbURL = "http://www.rcsb.org/pdb/files/"+structureID+".pdb";
@@ -125,10 +128,12 @@ function getDSSP(structure, num){
         src: dsspURL,
         id: "dsspIMG"
     }).error(function(){
-        console.log('no se pudo obtener la imagen, intentando de nuevo con otra "CHAIN"');
-        getDSSP(structure, ++num);
+        console.log('probando Chain: '+chain);
+        if(num<27){
+            getDSSP(structure, ++num);    
+        }
+        
     });
-    console.log('se consiguio la imagen de DSSP: '+dsspURL);
     window.dispatchEvent(new Event('resize'));
 }
 
@@ -144,6 +149,7 @@ function getPMC(structure){
         pcmID = $pubId.text();
         if(pcmID == ""){
             console.log("No hay un ID PubMed");
+            $('#pubTitle').text("no se pudo obtener un ID de pubmed");
             /*
             Falta: 
             1. poner un mensaje diciendo que no hay
@@ -196,7 +202,7 @@ function getPMC(structure){
 document.addEventListener("deviceready", onDeviceReady, false);
 // device APIs are available
 function onDeviceReady() {
-    //evito el scroll en ciertas aginas
+    //evito el scroll en ciertas paginas
     touchMove = function(event) {
         event.preventDefault();
     }
@@ -220,12 +226,12 @@ function createDB(tx) {
     tx.executeSql('CREATE TABLE IF NOT EXISTS HISTORY (ID INTEGER PRIMARY KEY ASC, STRUCTURE)');
 }
 function loadHistory(tx) {
-    tx.executeSql ('SELECT * FROM HISTORY ORDER BY ID DESC LIMIT 10', [], querySuccess, errorCB);
+    tx.executeSql ('SELECT DISTINCT STRUCTURE FROM HISTORY ORDER BY ID DESC LIMIT 10', [], querySuccess, errorCB);
 }
 function addItem(tx) {
     var valSearch = $("#search").val();
     tx.executeSql('INSERT INTO HISTORY (STRUCTURE) VALUES ("'+valSearch+'")');
-    tx.executeSql ('SELECT * FROM HISTORY ORDER BY ID DESC LIMIT 10', [], querySuccess, errorCB);
+    tx.executeSql ('SELECT DISTINCT STRUCTURE FROM HISTORY ORDER BY ID DESC LIMIT 10', [], querySuccess, errorCB);
 }
 function dropDB(tx) {
     tx.executeSql('DROP TABLE IF EXISTS HISTORY');

@@ -16,18 +16,38 @@
     <!-------------------------- PAGE 1: HOME -------------------------->
     <div data-role="page" id="home" ontouchmove="touchMove(event)">
         <div data-role="header">
-            <h1>Home</h1>
+            <h1>P3D Home</h1>
             <a href="#nav-panelHistory" data-transition="pop" data-rel="popup"data-icon="clock" class="ui-btn-right">History</a>
         </div>
         <div role="main" class="ui-content vertical-center">
             <div>
                 <p>Search Input:</p>
                 <input type="search" name="structure" id="search" value="" placeholder="Structure Name"/>
+                <div style="text-align: center;text-shadow: none;text-decoration: none;">
+                    Examples:
+                    <a href="#" style="text-decoration:none" onclick="$('#search').val('1AKE')">
+                        1AKE
+                    </a>
+                    , 
+                    <a href="#" style="text-decoration:none" onclick="$('#search').val('2MXF')">
+                        2MXF
+                    </a>
+                    , 
+                    <a href="#" style="text-decoration:none" onclick="$('#search').val('4R2U')">
+                        4R2U
+                    </a>
+                    , 
+                    <a href="#" style="text-decoration:none" onclick="$('#search').val('2MW6')">
+                        2MW6
+                    </a>
+                </div>
                 <a class="ui-btn" data-theme="b" data-textonly="true" data-textvisible="true" data-msgtext="There is no text for search" id="btnGraph">Graph</a>
             </div>
         </div>
         <div data-role="footer">
-            <h1>Footer</h1>
+            <h1 style="font-size: 0.6em;">
+                COPYRIGHT UNIVERSIDAD DISTRITAL<br/> GRUPO DE INVESTIGACIÓN  GICOGE
+            </h1>   
         </div>
         <div data-role="panel" data-position="right" data-display="overlay" data-theme="a" id="nav-panelHistory">
             <ul data-role="listview" id="historyList">
@@ -39,7 +59,7 @@
     <!-------------------------- PAGE 2: VIEWER -------------------------->
     <div data-role="page" class="ui-page" id="viewer" ontouchmove="touchMove(event)">
         <div data-role="header" data-add-back-btn="true">
-            <h1>P3D Viewer</h1>
+            <h1>P3D - Viewer</h1>
             <a href="#nav-panelConfig" data-icon="gear" class="ui-btn-right">Views</a>
         </div><!-- /header -->
         <div role="main" class="ui-content vertical-center">
@@ -75,13 +95,15 @@
     <div data-role="page" class="ui-page" id="publication" ontouchmove="touchMove(event)">
         <!-- CONTENIDO DE LA PUBLICACION -->
         <div data-role="header" data-add-back-btn="true">
-            <h1>Publication</h1>
+            <h1>P3D - Publication</h1>
         </div><!-- /header -->
         <div role="main" class="ui-content vertical-center">
             <h4 id="pubTitle" class="justify no-shadow"></h4>
             <p id="pubAbstract" class="truncate justify no-shadow"></p>
         </div><!-- /main -->
-        <div data-role="footer"></div>
+        <div data-role="footer" style="text-align:center;">
+            <a href="" data-transition="slide" class="ui-shadow ui-btn ui-mini ui-btn-inline">Read full text in PubMed Central</a>
+        </div>
     </div><!-- /page -->
     <!-------------------------- PAGE 4: DSSP -------------------------->
     <div data-role="page" class="ui-page" id="dssp">
@@ -97,7 +119,7 @@
     <div data-role="page" class="ui-page" id="sequence">
         <!-- CONTENIDO DE LA PUBLICACION -->
         <div data-role="header" data-add-back-btn="true">
-            <h1>Sequence</h1>
+            <h1>P3D - Sequence</h1>
         </div><!-- /header -->
         <div role="main" class="ui-content" id="seqMain">
         </div><!-- /main -->
