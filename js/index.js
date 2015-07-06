@@ -1,3 +1,17 @@
+$('.zoomInDSSP').click(function(){
+    var dsspWidth = $('#dsspIMG').width();
+    if(dsspWidth < 1200){
+        var newWidth = dsspWidth+(dsspWidth*0.5);
+        $('#dsspIMG').width(newWidth);
+    }
+});
+$('.zoomOutDSSP').click(function(){
+    var dsspWidth = $('#dsspIMG').width();
+    if(dsspWidth > 300){
+        var newWidth = dsspWidth-(dsspWidth*0.33333);
+        $('#dsspIMG').width(newWidth);
+    }
+});
 function h(h) {
   $('#search').val($(h).attr('id'));
   $( "#nav-panelHistory" ).panel( "close" );
@@ -231,7 +245,6 @@ function onDeviceReady() {
     touchMove = function(event) {
         event.preventDefault();
     }
-    //configuro y ejemplifico el pv.Viewer
     var structure1;
     viewer = pv.Viewer(document.getElementById('graph'), { 
         width : 500, height: 500, antialias : true, 

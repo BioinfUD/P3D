@@ -31,8 +31,7 @@ div#seqMain {
 text-shadow: none;
 }
 img#dsspIMG {
-width: 100%;
-min-height: 100%;
+width: 98%;
 }
 div# {
     -ms-transform: rotate(20deg); /* IE 9 */
