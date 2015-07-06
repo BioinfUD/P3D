@@ -188,12 +188,7 @@ function getPMC(structure){
         pcmID = $pubId.text();
         if(pcmID == ""){
             console.log("No hay un ID PubMed");
-            $('#pubTitle').text("no se pudo obtener un ID de pubmed");
-            /*
-            Falta: 
-            1. poner un mensaje diciendo que no hay
-            un ID de PubMed
-            */
+            $('#pubTitle').text("No se pudo obtener un ID de pubmed");
         }else{
             publicationURL = "http://www.ncbi.nlm.nih.gov/pubmed/"+pcmID+"?report=xml&format=text"
             $.get(publicationURL, function(data, status){
@@ -214,6 +209,10 @@ function getPMC(structure){
                 $('#pubTitle').text($title.text());
                 var shortAbstract = jQuery.trim($abstract.text()).substring(0, 600).trim(this) + "...";
                 $('#pubAbstract').text(shortAbstract);
+                $('#pubmedBtn').attr({
+                    href: "http://www.ncbi.nlm.nih.gov/pubmed/"+pcmID
+                });
+                
             })
             .done(function() {
                 console.log("SI se pudo conseguir la publicacion");
