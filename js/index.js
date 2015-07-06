@@ -1,3 +1,8 @@
+function nativeBrowser(a){
+    var link = $(a).attr('href');
+    navigator.app.loadUrl(link,{openExternal : true});
+    var ref = window.open(link, '_blank', 'location=no');
+}
 $('.zoomInDSSP').click(function(){
     var dsspWidth = $('#dsspIMG').width();
     if(dsspWidth < 1200){
@@ -207,10 +212,11 @@ function getPMC(structure){
                     //console.log($(this).find("Initials").text());
                 });
                 $('#pubTitle').text($title.text());
-                var shortAbstract = jQuery.trim($abstract.text()).substring(0, 600).trim(this) + "...";
+                var shortAbstract = jQuery.trim($abstract.text());
                 $('#pubAbstract').text(shortAbstract);
                 $('#pubmedBtn').attr({
-                    href: "http://www.ncbi.nlm.nih.gov/pubmed/"+pcmID
+                    onclick: "window.open(\'http://www.ncbi.nlm.nih.gov/pubmed/"+pcmID+"\', \'_self\', \'location=no\');return false;"
+
                 });
                 
             })
