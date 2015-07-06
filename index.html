@@ -19,27 +19,21 @@
             <h1>P3D Home</h1>
             <a href="#nav-panelHistory" data-transition="pop" data-rel="popup"data-icon="clock" class="ui-btn-right">History</a>
         </div>
-        <div role="main" class="ui-content vertical-center">
+        <div role="main" class="ui-content">
+            <br/><br/>
+            <div style="text-align:center;">
+                <img src="icon.png">
+            </div>
+            <br/><br/>
             <div>
                 <p>Search Input:</p>
                 <input type="search" name="structure" id="search" value="" placeholder="Structure Name"/>
                 <div style="text-align: center;text-shadow: none;text-decoration: none;">
                     Examples:
-                    <a href="#" style="text-decoration:none" onclick="$('#search').val('1AKE')">
-                        1AKE
-                    </a>
-                    , 
-                    <a href="#" style="text-decoration:none" onclick="$('#search').val('2MXF')">
-                        2MXF
-                    </a>
-                    , 
-                    <a href="#" style="text-decoration:none" onclick="$('#search').val('4R2U')">
-                        4R2U
-                    </a>
-                    , 
-                    <a href="#" style="text-decoration:none" onclick="$('#search').val('2MW6')">
-                        2MW6
-                    </a>
+                    <a href="#" style="text-decoration:none" onclick="$('#search').val('1AKE')">1AKE</a>, 
+                    <a href="#" style="text-decoration:none" onclick="$('#search').val('2MXF')">2MXF</a>, 
+                    <a href="#" style="text-decoration:none" onclick="$('#search').val('4R2U')">4R2U</a>, 
+                    <a href="#" style="text-decoration:none" onclick="$('#search').val('2MW6')">2MW6</a>
                 </div>
                 <a class="ui-btn" data-theme="b" data-textonly="true" data-textvisible="true" data-msgtext="There is no text for search" id="btnGraph">Graph</a>
             </div>
@@ -64,7 +58,7 @@
         </div><!-- /header -->
         <div role="main" class="ui-content vertical-center">
             <h1 id="structureNAME">Name</h1>
-            <div style="height:65vh; width:100%; border: solid;" id="graph"></div>
+            <div style="height:65vh; width:100%;" id="graph"></div>
         </div><!-- /main -->
         <div data-role="footer">
             <div class="ui-grid-b" style="text-align: center;">

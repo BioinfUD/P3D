@@ -214,7 +214,6 @@ function onDeviceReady() {
     });
     window.addEventListener('resize', function() {
         viewer.fitParent();
-        console.log("resize");
     });
     var db = window.openDatabase("Database", "1.0", "History", 2000000);
     db.transaction(createDB, errorCB, successCB);
