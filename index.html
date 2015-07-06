@@ -76,12 +76,12 @@
         <div data-role="panel" data-position="right" data-display="overlay" data-theme="a" id="nav-panelConfig">
             <ul data-role="listview">
                 <li data-icon="delete"><a href="#" data-rel="close">Close menu</a></li>
-                <li><a href="#panel-fixed-page2">Cartoon</a></li>
-                <li><a href="#panel-fixed-page2">Tube</a></li>
-                <li><a href="#panel-fixed-page2">Lines</a></li>
-                <li><a href="#panel-fixed-page2">Line Trace</a></li>
-                <li><a href="#panel-fixed-page2">Smooth Line Trace</a></li>
-                <li><a href="#panel-fixed-page2">Trace</a></li>
+                <li id="cartoon" onclick='render(this)'><a href="#">Cartoon</a></li>
+                <li id="tube" onclick='render(this)'><a href="#">Tube</a></li>
+                <li id="lines" onclick='render(this)'><a href="#">Lines</a></li>
+                <li id="line-trace" onclick='render(this)'><a href="#">Line Trace</a></li>
+                <li id="sline" onclick='render(this)'><a href="#">Smooth Line Trace</a></li>
+                <li id="trace" onclick='render(this)'><a href="#">Trace</a></li>
             </ul>
         </div><!-- /panel -->
     </div>
@@ -118,8 +118,8 @@
         <div role="main" class="ui-content" id="seqMain">
         </div><!-- /main -->
         <div data-role="footer"></div>
-    </div><!-- /page -->
-    <script src="phonegap.js"></script>
+    </div><!-- /page 
+    <script src="phonegap.js"></script>-->
     <script type="text/javascript" src="js/index.js"></script>
     <script type='text/javascript' src='js/bio-pv.min.js'></script>
 </body>

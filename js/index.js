@@ -2,6 +2,30 @@ function h(h) {
   $('#search').val($(h).attr('id'));
   $( "#nav-panelHistory" ).panel( "close" );
 }
+function render(h) {
+    var idRender = $(h).attr('id');
+    switch(idRender) {
+        case 'cartoon':
+            cartoon();
+            break;
+        case 'tube':
+            tube();
+            break;
+        case 'lines':
+            lines();
+            break;
+        case 'line-trace':
+            lineTrace();
+            break;
+        case 'sline':
+            sline();
+            break;
+        case 'trace':
+            trace();
+            break;
+    }
+  $( "#nav-panelConfig" ).panel( "close" );
+}
 $('#nav-panelHistory').click(function () {
   $( "#nav-panelHistory" ).panel( "close" );
 });
@@ -79,6 +103,7 @@ $('#btnGraph').click(function () {
     viewer.clear();
     pdbURL = "http://www.rcsb.org/pdb/files/"+structureID+".pdb";
     pv.io.fetchPdb(pdbURL, function(structure) {
+      structure1 = structure;
       var ligand = structure.select({'rnames' : ['SAH', 'RVP']});
       viewer.ballsAndSticks('structure.ligand', ligand, {});
       viewer.centerOn(structure);
@@ -207,6 +232,7 @@ function onDeviceReady() {
         event.preventDefault();
     }
     //configuro y ejemplifico el pv.Viewer
+    var structure1;
     viewer = pv.Viewer(document.getElementById('graph'), { 
         width : 500, height: 500, antialias : true, 
         outline : true, quality : 'medium', style : 'hemilight',
@@ -251,4 +277,52 @@ function querySuccess(tx, results) {
         $("#historyList").html(listaActual+"<li onclick='h(this)' id='"+results.rows.item(i).STRUCTURE+"' ><a id='"+results.rows.item(i).STRUCTURE+"' class='ui-btn ui-btn-icon-right ui-icon-carat-r historyItem' href='#'>"+results.rows.item(i).STRUCTURE+"</a></li>");
     }
     return false;
+}
+
+function cartoon() {
+  viewer.clear();
+  var go = viewer.cartoon('structure', structure1, {
+      color : color.ssSuccession(), showRelated : '1',
+  });
+  go.setSelection(structure1.select({ rnumRange : [15,20] }));
+  
+  var rotation = viewpoint.principalAxes(go);
+  viewer.setRotation(rotation)
+}
+
+function tube() {
+  viewer.clear();
+  var go = viewer.tube('structure', structure1);
+  viewer.lines('structure.ca', structure1.select({aname :'CA'}),
+            { color: color.uniform('blue'), lineWidth : 1,
+              showRelated : '1' });
+  go.setSelection(structure1.select({ rnumRange : [15,20] }));
+}
+
+function lines() {
+  viewer.clear();
+  var go = viewer.lines('structure', structure1, {
+              color: color.byResidueProp('num'),
+              showRelated : '1' });
+  go.setSelection(structure1.select({ rnumRange : [15,20] }));
+}
+
+function lineTrace() {
+  viewer.clear();
+  var go = viewer.lineTrace('structure', structure1, { showRelated : '1' });
+  go.setSelection(structure1.select({ rnumRange : [15,20] }));
+}
+
+function sline() {
+  viewer.clear();
+  var go = viewer.sline('structure', structure1,
+          { color : color.uniform('red'), showRelated : '1'});
+  go.setSelection(structure1.select({ rnumRange : [15,20] }));
+}
+
+function trace() {
+  viewer.clear();
+  var go = viewer.trace('structure', structure1, { showRelated : '1' });
+  go.setSelection(structure1.select({ rnumRange : [15,20] }));
+
 }
